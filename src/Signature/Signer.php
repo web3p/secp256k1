@@ -61,7 +61,7 @@ class Signer
      * @param \Mdanter\Ecc\Crypto\Key\PrivateKeyInterface $key
      * @param \GMP $truncatedHash - hash truncated for use in ECDSA
      * @param \GMP $randomK
-     * @return SignatureInterface
+     * @return \Mdanter\Ecc\Crypto\Signature\SignatureInterface
      */
     public function sign(PrivateKeyInterface $key, GMP $truncatedHash, GMP $randomK): SignatureInterface
     {
