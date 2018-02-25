@@ -15,7 +15,7 @@ composer require web3p/secp256k1
 # Usage
 
 Sign a message:
-```
+```php
 use Secp256k1\Secp256k1;
 use Secp256k1\Serializer\HexSignatureSerializer;
 
@@ -37,7 +37,7 @@ $signatureString = $serializer->serialize($signature);
 ```
 
 Verify a message:
-```
+```php
 use Secp256k1\Secp256k1;
 
 $secp256k1 = new Secp256k1();
