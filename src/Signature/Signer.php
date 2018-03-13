@@ -76,7 +76,7 @@ class Signer
             $math = $this->adapter;
             $nh = $math->rightShift($options['n'], 1);
 
-            if ($math->cmp($options['n'], $nh) > 0) {
+            if ($math->cmp($s, $nh) > 0) {
                 $s = gmp_sub($options['n'], $s);
             }
         }
