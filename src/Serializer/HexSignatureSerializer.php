@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Secp256k1\Serializer;
+namespace Web3p\Secp256k1\Serializer;
 
 use InvalidArgumentException;
 use Mdanter\Ecc\Crypto\Signature\Signature;

@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Secp256k1\\": "src/"
+            "Web3p\\Secp256k1\\": "src/"
         }
     },
     "autoload-dev": {
