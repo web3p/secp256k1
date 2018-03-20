@@ -15,6 +15,7 @@ use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Curves\CurveFactory;
 use Mdanter\Ecc\Curves\SecgCurve;
 use Mdanter\Ecc\Crypto\Signature\SignatureInterface;
+use Mdanter\Ecc\Random\RandomGeneratorFactory;
 use Web3p\Secp256k1\Serializer\HexPrivateKeySerializer;
 use Web3p\Secp256k1\Serializer\HexSignatureSerializer;
 use Web3p\Secp256k1\Signature\Signer;
@@ -119,22 +120,16 @@ class Secp256k1
         $key = $this->deserializer->parse($privateKey);
         $hash = gmp_init($hash, 16);
 
-        // if (!isset(options['n'])) {
-        //     $random = \Mdanter\Ecc\Random\RandomGeneratorFactory::getHmacRandomGenerator($key, $hash, $this->algorithm);
-        //     $n = $this->generator->getOrder();
-        //     $randomK = $random->generate($n);
+        if (!isset($options['n'])) {
+            $random = RandomGeneratorFactory::getHmacRandomGenerator($key, $hash, $this->algorithm);
+            $n = $this->generator->getOrder();
+            $randomK = $random->generate($n);
 
-        //     $options['n']  = $n;
-        //     $options['canonical'] = true;
-        // }
-        // if (!isset(options['canonical'])) {
-        //     $options['canonical'] = false;
-        // }s
-        $random = \Mdanter\Ecc\Random\RandomGeneratorFactory::getHmacRandomGenerator($key, $hash, $this->algorithm);
-        $n = $this->generator->getOrder();
-        $randomK = $random->generate($n);
-        $options['n']  = $n;
-        $options['canonical'] = true;
+            $options['n']  = $n;
+        }
+        if (!isset($options['canonical'])) {
+            $options['canonical'] = true;
+        }
         $signer = new Signer($this->adapter, $options);
 
         return $signer->sign($key, $hash, $randomK);
