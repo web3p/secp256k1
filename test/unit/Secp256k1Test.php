@@ -3,8 +3,8 @@
 namespace Test\Unit;
 
 use Test\TestCase;
-use Secp256k1\Serializer\HexPrivateKeySerializer;
-use Secp256k1\Secp256k1;
+use Web3p\Secp256k1\Serializer\HexPrivateKeySerializer;
+use Web3p\Secp256k1\Secp256k1;
 
 class Secp256k1Test extends TestCase
 {

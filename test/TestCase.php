@@ -3,14 +3,14 @@
 namespace Test;
 
 use \PHPUnit\Framework\TestCase as BaseTestCase;
-use Secp256k1\Serializer\HexSignatureSerializer;
+use Web3p\Secp256k1\Serializer\HexSignatureSerializer;
 
 class TestCase extends BaseTestCase
 {
     /**
      * sigSerializer
      *
-     * @var \Secp256k1\Serializer\HexSignatureSerializer
+     * @var \Web3p\Secp256k1\Serializer\HexSignatureSerializer
      */
     protected $sigSerializer;
 

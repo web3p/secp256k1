@@ -6,8 +6,8 @@ use Test\TestCase;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Curves\CurveFactory;
 use Mdanter\Ecc\Curves\SecgCurve;
-use Secp256k1\Serializer\HexPrivateKeySerializer;
-use Secp256k1\Signature\Signer;
+use Web3p\Secp256k1\Serializer\HexPrivateKeySerializer;
+use Web3p\Secp256k1\Signature\Signer;
 
 class SignerTest extends TestCase
 {

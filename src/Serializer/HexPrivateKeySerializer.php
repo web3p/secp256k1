@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-namespace Secp256k1\Serializer;
+namespace Web3p\Secp256k1\Serializer;
 
 use Mdanter\Ecc\Serializer\PrivateKey\PrivateKeySerializerInterface;
 use Mdanter\Ecc\Crypto\Key\PrivateKeyInterface;
@@ -38,7 +38,7 @@ class HexPrivateKeySerializer implements PrivateKeySerializerInterface
      * serialize
      * 
      * @see \Mdanter\Ecc\Serializer\PrivateKey\PrivateKeySerializerInterface::serialize()
-     * @param PrivateKeyInterface $key
+     * @param \Mdanter\Ecc\Crypto\Key\PrivateKeyInterface $key
      * @return string
      */
     public function serialize(PrivateKeyInterface $key): string

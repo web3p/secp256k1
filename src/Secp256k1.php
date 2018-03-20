@@ -8,16 +8,16 @@
  * @license MIT
  */
 
-namespace Secp256k1;
+namespace Web3p\Secp256k1;
 
 use InvalidArgumentException;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Curves\CurveFactory;
 use Mdanter\Ecc\Curves\SecgCurve;
 use Mdanter\Ecc\Crypto\Signature\SignatureInterface;
-use Secp256k1\Serializer\HexPrivateKeySerializer;
-use Secp256k1\Serializer\HexSignatureSerializer;
-use Secp256k1\Signature\Signer;
+use Web3p\Secp256k1\Serializer\HexPrivateKeySerializer;
+use Web3p\Secp256k1\Serializer\HexSignatureSerializer;
+use Web3p\Secp256k1\Signature\Signer;
 
 class Secp256k1
 {
@@ -38,7 +38,7 @@ class Secp256k1
     /**
      * deserializer
      *
-     * @var \Secp256k1\Serializer\HexPrivateKeySerializer
+     * @var \Web3p\Secp256k1\Serializer\HexPrivateKeySerializer
      */
     protected $deserializer;
 
@@ -99,7 +99,7 @@ class Secp256k1
     /**
      * getDeserializer
      * 
-     * @return \Secp256k1\Serializer\HexPrivateKeySerializer
+     * @return \Web3p\Secp256k1\Serializer\HexPrivateKeySerializer
      */
     // public function getDeserializer()
     // {

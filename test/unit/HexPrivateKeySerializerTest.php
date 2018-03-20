@@ -5,7 +5,7 @@ namespace Test\Unit;
 use Test\TestCase;
 use Mdanter\Ecc\Curves\CurveFactory;
 use Mdanter\Ecc\Curves\SecgCurve;
-use Secp256k1\Serializer\HexPrivateKeySerializer;
+use Web3p\Secp256k1\Serializer\HexPrivateKeySerializer;
 
 class HexPrivateKeySerializerTest extends TestCase
 {
