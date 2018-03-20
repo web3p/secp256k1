@@ -16,8 +16,8 @@ composer require web3p/secp256k1
 
 Sign a message:
 ```php
-use Secp256k1\Secp256k1;
-use Secp256k1\Serializer\HexSignatureSerializer;
+use Web3p\Secp256k1\Secp256k1;
+use Web3p\Secp256k1\Serializer\HexSignatureSerializer;
 
 $secp256k1 = new Secp256k1();
 
@@ -34,11 +34,14 @@ $s = $signature->getS();
 // encode to hex
 $serializer = new HexSignatureSerializer();
 $signatureString = $serializer->serialize($signature);
+
+// or you can call toHex
+$signatureString = $signature->toHex();
 ```
 
 Verify a message:
 ```php
-use Secp256k1\Secp256k1;
+use Web3p\Secp256k1\Secp256k1;
 
 $secp256k1 = new Secp256k1();
 
