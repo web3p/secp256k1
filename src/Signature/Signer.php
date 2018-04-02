@@ -58,6 +58,7 @@ class Signer
 
     /**
      * sign
+     * maybe copy original code
      * 
      * @param \Mdanter\Ecc\Crypto\Key\PrivateKeyInterface $key
      * @param \GMP $truncatedHash - hash truncated for use in ECDSA
@@ -68,21 +69,34 @@ class Signer
     {
         $signature = $this->signer->sign($key, $truncatedHash, $randomK);
         $options = $this->options;
+        $math = $this->adapter;
+
+        // get r and s
         $r = $signature->getR();
         $s = $signature->getS();
+
+        // get recovery param
+        $zero = gmp_init(0, 10);
+        $two = gmp_init(2, 10);
+        $generator = $key->getPoint();
+        $kp = $generator->mul($randomK);
+        $kpY = $kp->getY();
+        $kpX = $kp->getX();
+        $recoveryParam = (($math->equals($math->mod($kpY, $two), $zero)) ? 0 : 1) |
+                         (($math->cmp($kpX, $r) !== 0)  ? 2 : 0);
 
         if (
             (isset($options['canonical']) && $options['canonical'] === true) &&
             (isset($options['n']) && $options['n'] instanceof GMP)) {
-            $math = $this->adapter;
             $nh = $math->rightShift($options['n'], 1);
 
             if ($math->cmp($s, $nh) > 0) {
                 $s = gmp_sub($options['n'], $s);
+                $recoveryParam ^= 1;
             }
         }
 
-        return new Signature($r, $s);
+        return new Signature($r, $s, $recoveryParam);
     }
 
     /**
