@@ -77,12 +77,15 @@ class Signer
 
         // get recovery param
         $zero = gmp_init(0, 10);
-        $two = gmp_init(2, 10);
+        $one = gmp_init(1, 10);
         $generator = $key->getPoint();
         $kp = $generator->mul($randomK);
         $kpY = $kp->getY();
         $kpX = $kp->getX();
-        $recoveryParam = (($math->equals($math->mod($kpY, $two), $zero)) ? 0 : 1) |
+        // same:
+        // $two = gmp_init(2, 10);
+        // (($math->equals($math->mod($kpY, $two), $zero)) ? 0 : 1)
+        $recoveryParam = (($math->equals($math->bitwiseAnd($kpY, $one), $zero)) ? 0 : 1) |
                          (($math->cmp($kpX, $r) !== 0)  ? 2 : 0);
 
         if (
