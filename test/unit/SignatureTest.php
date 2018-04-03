@@ -47,5 +47,6 @@ class SignatureTest extends TestCase
 
         $this->assertTrue($signature instanceof Signature);
         $this->assertEquals('f67118680df5993e8efca4d3ecc4172ca4ac5e3e007ea774293e37386480970347427f3633371c1a30abbb2b717dbd78ef63d5b19b5a951f9d681cccdd520320', $signature->toHex());
+        $this->assertEquals(0, $signature->getRecoveryParam());
     }
 }
