@@ -11,11 +11,13 @@
 namespace Web3p\Secp256k1;
 
 use InvalidArgumentException;
+use RuntimeException;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Curves\CurveFactory;
 use Mdanter\Ecc\Curves\SecgCurve;
 use Mdanter\Ecc\Crypto\Signature\SignatureInterface;
 use Mdanter\Ecc\Random\RandomGeneratorFactory;
+use Mdanter\Ecc\Primitives\PointInterface;
 use Web3p\Secp256k1\Serializer\HexPrivateKeySerializer;
 use Web3p\Secp256k1\Serializer\HexSignatureSerializer;
 use Web3p\Secp256k1\Signature\Signer;
@@ -35,6 +37,13 @@ class Secp256k1
      * @var \Mdanter\Ecc\Primitives\Point
      */
     protected $generator;
+
+    /**
+     * curve
+     *
+     * @var \Mdanter\Ecc\Curves\NamedCurveFp
+     */
+    protected $curve;
 
     /**
      * deserializer
@@ -60,6 +69,7 @@ class Secp256k1
     {
         $this->adapter = EccFactory::getAdapter();
         $this->generator = CurveFactory::getGeneratorByName(SecgCurve::NAME_SECP_256K1);
+        $this->curve = $this->generator->getCurve();
         $this->deserializer = new HexPrivateKeySerializer($this->generator);
         $this->algorithm = $hashAlgorithm;
     }
@@ -146,7 +156,7 @@ class Secp256k1
     public function verify(string $hash, SignatureInterface $signature, string $publicKey): bool
     {
         $gmpKey = $this->decodePoint($publicKey);
-        $key = $this->generator->getPublickeyFrom($gmpKey[0], $gmpKey[1]);
+        $key = $this->generator->getPublickeyFrom($gmpKey->getX(), $gmpKey->getY());
         $hash = gmp_init($hash, 16);
         $signer = new Signer($this->adapter);
 
@@ -157,12 +167,13 @@ class Secp256k1
      * decodePoint
      * 
      * @param string $publicKey
-     * @return array
+     * @return \Mdanter\Ecc\Primitives\PointInterface
      */
-    protected function decodePoint(string $publicKey): array
+    protected function decodePoint(string $publicKey): PointInterface
     {
-        $order = gmp_strval($this->generator->getOrder(), 16);
-        $length = mb_strlen($order);
+        $order = $this->generator->getOrder();
+        $orderString = gmp_strval($order, 16);
+        $length = mb_strlen($orderString);
         $keyLength = mb_strlen($publicKey);
         $num = hexdec(mb_substr($publicKey, 0, 2));
 
@@ -177,20 +188,15 @@ class Secp256k1
                 throw new InvalidArgumentException('Invalid public key point x and y.');
             }
 
-            $res = [
-                $x, $y
-            ];
-            return $res;
+            return $this->curve->getPoint($x, $y, $order);
         } elseif (
             ($num === 2 || $num === 3) &&
             ($length + 2) === $keyLength
         ) {
             $x = gmp_init(mb_substr($publicKey, 2, $length), 16);
-            $y = $this->generator->getCurve()->recoverYfromX($num === 3, $x);
-            $res = [
-                $x, $y
-            ];
-            return $res;
+            $y = $this->curve->recoverYfromX($num === 3, $x);
+
+            return $this->curve->getPoint($x, $y, $order);
         }
         throw new InvalidArgumentException('Invalid public key point format.');
     }

@@ -9,7 +9,6 @@
             "email": "alk03073135@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require-dev": {
         "phpunit/phpunit": "~6.0"
     },
@@ -24,6 +23,7 @@
         }
     },
     "require": {
-        "mdanter/ecc": "dev-master"
+        "PHP": ">=7.1",
+        "mdanter/ecc": "~0.5"
     }
 }
