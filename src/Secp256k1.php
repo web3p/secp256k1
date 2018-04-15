@@ -11,6 +11,7 @@
 namespace Web3p\Secp256k1;
 
 use InvalidArgumentException;
+use RuntimeException;
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Curves\CurveFactory;
 use Mdanter\Ecc\Curves\SecgCurve;
@@ -37,6 +38,13 @@ class Secp256k1
     protected $generator;
 
     /**
+     * curve
+     *
+     * @var \Mdanter\Ecc\Curves\NamedCurveFp
+     */
+    protected $curve;
+
+    /**
      * deserializer
      *
      * @var \Web3p\Secp256k1\Serializer\HexPrivateKeySerializer
@@ -60,6 +68,7 @@ class Secp256k1
     {
         $this->adapter = EccFactory::getAdapter();
         $this->generator = CurveFactory::getGeneratorByName(SecgCurve::NAME_SECP_256K1);
+        $this->curve = $this->generator->getCurve();
         $this->deserializer = new HexPrivateKeySerializer($this->generator);
         $this->algorithm = $hashAlgorithm;
     }
@@ -186,7 +195,7 @@ class Secp256k1
             ($length + 2) === $keyLength
         ) {
             $x = gmp_init(mb_substr($publicKey, 2, $length), 16);
-            $y = $this->generator->getCurve()->recoverYfromX($num === 3, $x);
+            $y = $this->curve->recoverYfromX($num === 3, $x);
             $res = [
                 $x, $y
             ];
